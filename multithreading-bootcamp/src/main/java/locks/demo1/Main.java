@@ -22,7 +22,7 @@ public class Main {
 
 
 /**
- * when we use synchronized keyword when t1 access then t2 can't be access doesn't natter either you are making it sleep for some time
+ * when we use synchronized keyword when t1 access then t2 can't be access doesn't matter either you are making it sleep for some time
  * till t1 won't finish the complete task including sleep when t1 finish then t2 will start executing. here sleep means doing some task
  *
  * Here we put sleep to simulate longer operation
