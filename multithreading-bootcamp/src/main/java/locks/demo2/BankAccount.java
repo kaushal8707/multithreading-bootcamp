@@ -14,6 +14,10 @@ public class BankAccount {
     public void withdraw(int amount){
         System.out.println(Thread.currentThread().getName()+" attempting to withdraw "+amount);
         try{
+            //lock.lock();        // this is same as a synchronized method like if any thread come so he will wait untill he acquire the lock
+                                  // so there is no much use of lock() method bcz we should just have to check if lock avail execute otw perform some other task
+                                  // otherwise just wait for a specified amount of time if get the lock do perform otw perform some other task in else block
+                                  // why should simply wait to get the lock indefinitely...
             if(lock.tryLock(1000, TimeUnit.MICROSECONDS)){
                 if(balance>=amount) {
                     try {
@@ -22,7 +26,7 @@ public class BankAccount {
                         balance -= amount;
                         System.out.println(Thread.currentThread().getName() + " completed withdrawl. remaining balance: " + balance);
                     }catch (Exception e){
-
+                        Thread.currentThread().interrupt();
                     } finally {
                         lock.unlock();     // always we release the resources in finally block.
                     }
@@ -33,8 +37,11 @@ public class BankAccount {
             }else{
                 System.out.println(Thread.currentThread().getName()+" couldn't acquired the lock will try again later !!");
             }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
+        }
+        if(Thread.currentThread().isInterrupted()){
+            System.out.println("-----------------------");
         }
     }
 }
