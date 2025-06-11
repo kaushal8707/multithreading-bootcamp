@@ -58,6 +58,12 @@ public class ReadWriteCounter {
         readerThread1.start();
         readerThread2.start();
 
+        writerThread.join();
+        readerThread1.join();
+        readerThread2.join();
+
+        System.out.println("Final count : "+counter.getCount());
+
 
     }
 }
